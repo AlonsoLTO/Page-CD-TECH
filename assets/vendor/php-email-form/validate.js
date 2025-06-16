@@ -55,20 +55,16 @@
       body: formData,
       headers: {'X-Requested-With': 'XMLHttpRequest'}
     })
-    .then(response => {
-      if( response.ok ) {
-        return response.text();
-      } else {
-        throw new Error(`${response.status} ${response.statusText} ${response.url}`); 
-      }
-    })
+    .then(response => response.json())
     .then(data => {
       thisForm.querySelector('.loading').classList.remove('d-block');
-      if (data.trim() == 'OK') {
+      if (data.status === 'success') {
+        thisForm.querySelector('.sent-message').innerHTML = data.message;
         thisForm.querySelector('.sent-message').classList.add('d-block');
-        thisForm.reset(); 
+        thisForm.querySelector('.error-message').classList.remove('d-block');
+        thisForm.reset();
       } else {
-        throw new Error(data ? data : 'Form submission failed and no error message returned from: ' + action); 
+        throw new Error(data.message || 'Error en el envío del formulario.');
       }
     })
     .catch((error) => {
