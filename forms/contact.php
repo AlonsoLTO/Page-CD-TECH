@@ -56,10 +56,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         ";
 
         $mail->send();
-        echo "Mensaje enviado correctamente.";
+        header('Content-Type: application/json');
+        echo json_encode(['status' => 'success', 'message' => 'Tu mensaje ha sido enviado. Gracias!']);
     } catch (Exception $e) {
-        http_response_code(500);
-        echo "Error al enviar el mensaje: {$mail->ErrorInfo}";
+        http_response_code(400);
+        echo json_encode(['status' => 'error', 'message' => 'Faltan datos en el formulario.']);
     }
 
 } else {
