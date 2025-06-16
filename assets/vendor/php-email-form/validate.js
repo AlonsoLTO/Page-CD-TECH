@@ -57,21 +57,21 @@
   })
   .then(response => {
     if (response.ok) {
-      return response.json(); 
+      return response.json(); // ✅ leer como JSON real
     } else {
-      throw new Error(`${response.status} ${response.statusText} ${response.url}`);
+      throw new Error(`${response.status} ${response.statusText}`);
     }
   })
   .then(data => {
     thisForm.querySelector('.loading').classList.remove('d-block');
-
+  
     if (data.status === 'success') {
       thisForm.querySelector('.sent-message').innerHTML = data.message;
       thisForm.querySelector('.sent-message').classList.add('d-block');
       thisForm.querySelector('.error-message').classList.remove('d-block');
       thisForm.reset();
     } else {
-      throw new Error(data.message || 'Error al enviar el formulario.');
+      throw new Error(data.message || 'Ocurrió un error inesperado.');
     }
   })
   .catch((error) => {
